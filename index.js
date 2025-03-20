@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', main)
     const ramens = [
         { id: 1, name: "Gyukotsu Ramen", restaurant: "Gyukotsu", image: "./css/images/gyukotsu.jpg", rating: 5, comment: "Delicious beefy broth!" },
         { id: 2, name: "Kojiro Ramen", restaurant: "Kojiro", image: "./css/images/kojiro (1).jpg", rating: 4, comment: "Rich and savory!" },
@@ -7,73 +7,74 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 5, name: "Shoyu Ramen", restaurant: "Ichiryu", image: "./css/images/shoyu (2).jpg", rating: 3, comment: "Good, but could use more depth." }
     ];
    
-    const ramenMenu = document.getElementById('ramen-menu');
-    const detailImage = document.getElementById('detail-image');
-    const ramenName = document.getElementById('ramen-name');
-    const ramenRestaurant = document.getElementById('ramen-restaurant');
-    const ramenRating = document.getElementById('ramen-rating');
-    const ramenComment = document.getElementById('ramen-comment');
-
-
-    
-    const ramenData = [
-        {
-            name: 'Gyukotsu Ramen',
-            restaurant: 'Gyukotsu',
-            image: './css/images/gyukotsu.jpg',
-            rating: 5,
-            comment: 'Rich and flavorful beef bone broth.'
-        },
-        {
-            name: 'Kojiro Ramen',
-            restaurant: 'Ippudo',
-            image: './css/images/kojiro (1).jpg',
-            rating: 4,
-            comment: 'Classic tonkotsu with a modern twist.'
-        },
-        {
-            name: 'Naruto Ramen',
-            restaurant: 'Ramen Nagi',
-            image: './css/images/naruto.jpg',
-            rating: 3,
-            comment: 'Good for Naruto fans, but average taste.'
-        },
-        {
-            name: 'Nirvana Ramen',
-            restaurant: 'Menya Musashi',
-            image: './css/images/nirvana (1).jpg',
-            rating: 5,
-            comment: 'Heavenly broth with perfect noodles.'
-        },
-        {
-            name: 'Shoyu Ramen',
-            restaurant: 'Afuri',
-            image: './css/images/shoyu (2).jpg',
-            rating: 4,
-            comment: 'Light and refreshing soy sauce base.'
+        const ramenMenu = document.getElementById('ramen-menu');
+        const detailImage = document.getElementById('detail-image');
+        const ramenName = document.getElementById('ramen-name');
+        const ramenRestaurant = document.getElementById('ramen-restaurant');
+        const ramenRating = document.getElementById('ramen-rating');
+        const ramenComment = document.getElementById('ramen-comment');
+        
+        function displayRamenDetails(ramen) {
+            ramenName.textContent = ramen.name;
+            ramenRestaurant.textContent = ramen.restaurant;
+            ramenRating.textContent = `Rating: ${ramen.rating}`;
+            ramenComment.textContent = ramen.comment;
+            detailImage.src = ramen.image;
         }
-    ];
 
-    
-    function displayRamenDetails(ramen) {
-        const ramen = ramenData[index]; 
-        ramenName.textContent = ramen.name; 
-        ramenRestaurant.textContent = ramen.restaurant; 
-        ramenRating.textContent = ramen.rating; 
-        ramenComment.textContent = ramen.comment; 
-        detailImage.src = ramen.image;
-    }
-    displayRamenDetails(ramen)
-2
-    
-    ramenImages.forEach((img, index) => {
-        img.addEventListener('click', () => displayRamenDetails(index));
-    });
+        function displayRamens() {
+            ramenMenu.innerHTML = ""; 
+            ramens.forEach(ramen => addRamenToRamenMenu(ramen));
+        }
 
-    ramenData.forEach((ramen, index) => {
-        const img = document.createElement('img');
-        img.src = ramen.image;
-        img.alt = ramen.name;
-        ramenMenu.appendChild(img);
-    });
-});
+        function addRamenToRamenMenu(ramen) {
+            const img = document.createElement('img');
+            img.src = ramen.image;
+            img.alt = ramen.name;
+            img.dataset.id = ramen.id;
+
+            img.addEventListener("click", () => handleClick(ramen)); 
+            ramenMenu.appendChild(img);
+        }
+
+        function handleClick(ramen) {
+            displayRamenDetails(ramen);
+        }
+        function addSubmitListener(){
+            const form =document.getElementById("new-ramen")
+            form.addEventListener('submit', handleFormSubmit)
+        }
+        function handleFormSubmit(event){
+            event.preventDefault()
+        
+        const names = document.getElementById("name").value
+        const restaurant = document.getElementById("restaurant").value
+        const image = document.getElementById("image").value
+        const rating = document.getElementById("rating").value
+        const comment = document.getElementById("comment").value
+
+        if (names && restaurant && image && rating && comment){
+            addsRamenMenu(names, restaurant, image, rating, comment)
+            event.target.reset()
+        }}
+        function addsRamenMenu(names, restaurant, image, rating, comment){
+            const newMenu = {
+                name : names,
+                restaurant : restaurant,
+                image : image,
+                rating : rating,
+                comment : comment,
+            }
+
+                ramens.push(newMenu);
+                addRamenToRamenMenu(newMenu)
+
+            
+        }
+        function main() {
+            displayRamens();
+            addSubmitListener()
+            if (ramens.length<0){
+                handleClick(ramens[0])
+            }
+        }
